@@ -2,7 +2,7 @@ import requests
 from block import Block
 import datetime
 
-serverUrl = "http://0.0.0.0:8000"
+serverUrl = "http://0.0.0.0:80"
 
 def sendTransaction(transactionData):
     try:
@@ -18,7 +18,7 @@ if __name__ == '__main__':
             print("Bye!")
             break
         else:
-            newBlock = Block(1, datetime.datetime.now(), {clientInput}, "")
-            print(newBlock)
-            sendTransaction(newBlock)
+            # newBlock = Block(1, datetime.datetime.now(), {clientInput}, "")
+            # print(newBlock)
+            sendTransaction(clientInput)
         

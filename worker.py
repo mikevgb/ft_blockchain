@@ -1,5 +1,6 @@
 import requests
 import time
+import json
 from block import Block
 serverUrl = "http://0.0.0.0:8000"
 
@@ -15,12 +16,14 @@ while True:
     response = requests.get(serverUrl + "/mine")
     
     if response.status_code == 200:
-        transData = response.text
-        print("Worker receive transaction, starting mining...")
-        print("Transdata =", transData)
-        blockToMine = Block()
-        block = blockToMine.mine_block(transData)
-        if block:
-            minedResponse = requests.post(serverUrl + "/minedBlock", data=block)
+        if response.text:
+            transData = response.json()
+            print("Worker receive transaction, starting mining...")
+            block = Block(transData['trans'], transData['lastB'])
+            block.mine_block()
+            calculated = str(block.getHash)
+            # if block:
+            minedResponse = requests.post(serverUrl + "/minedBlock", data=calculated)
+            print("Hash send...", minedResponse.text)
     if response.status_code == 204:
         time.sleep(5)
